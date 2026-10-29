@@ -1,0 +1,542 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated"
+}
+
+enum ContentStatus {
+  DRAFT
+  PUBLISHED
+  SCHEDULED
+  ARCHIVED
+}
+
+model User {
+  id             String         @id @default(cuid())
+  name           String?
+  email          String         @unique
+  password       String
+  role           String         @default("USER")
+  image          String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  authoredPages  WebsitePage[]  @relation("PageAuthor")
+  updatedPages   WebsitePage[]  @relation("PageUpdater")
+  uploadedAssets WebsiteAsset[]
+  activityLogs   ActivityLog[]
+  userRoles      UserRole[]
+  Product        Product[]
+  Review         Review[]
+  BlogPost       BlogPost[]
+}
+
+model Role {
+  id          String           @id @default(cuid())
+  name        String           @unique
+  description String?
+  users       UserRole[]
+  permissions RolePermission[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
+model UserRole {
+  userId String
+  roleId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role   Role   @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, roleId])
+}
+
+model Permission {
+  id          String           @id @default(cuid())
+  name        String           @unique
+  description String?
+  roles       RolePermission[]
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+}
+
+model WebsitePage {
+  id             String               @id @default(cuid())
+  title          String
+  slug           String               @unique
+  parentId       String?
+  parent         WebsitePage?         @relation("PageHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children       WebsitePage[]        @relation("PageHierarchy")
+  status         ContentStatus        @default(DRAFT)
+  isPublished    Boolean              @default(false)
+  publishedAt    DateTime?
+  scheduledAt    DateTime?
+  expiresAt      DateTime?
+  previewToken   String?              @unique
+  seoTitle       String?
+  seoDescription String?
+  canonicalUrl   String?
+  noIndex        Boolean              @default(false)
+  noFollow       Boolean              @default(false)
+  ogTitle        String?
+  ogDescription  String?
+  ogImage        String?
+  structuredData Json?
+  lockVersion    Int                  @default(1)
+  authorId       String?
+  author         User?                @relation("PageAuthor", fields: [authorId], references: [id], onDelete: SetNull)
+  updatedById    String?
+  updatedBy      User?                @relation("PageUpdater", fields: [updatedById], references: [id], onDelete: SetNull)
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+  sections       WebsiteSection[]
+  versions       WebsitePageVersion[]
+
+  @@index([slug, status])
+  @@index([parentId])
+  @@index([scheduledAt])
+}
+
+model WebsitePageVersion {
+  id            String      @id @default(cuid())
+  pageId        String
+  page          WebsitePage @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  versionNumber Int
+  title         String
+  snapshot      Json?
+  createdById   String?
+  createdAt     DateTime    @default(now())
+
+  @@index([pageId, createdAt])
+}
+
+model WebsiteSection {
+  id        String           @id @default(cuid())
+  pageId    String
+  page      WebsitePage      @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  type      String
+  name      String?
+  sortOrder Int              @default(0)
+  isVisible Boolean          @default(true)
+  settings  Json?
+  content   Json?
+  elements  WebsiteElement[]
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@index([pageId, sortOrder])
+}
+
+model WebsiteElement {
+  id        String         @id @default(cuid())
+  sectionId String
+  section   WebsiteSection @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  type      String
+  content   Json?
+  styles    Json?
+  sortOrder Int            @default(0)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  @@index([sectionId, sortOrder])
+}
+
+model WebsiteGlobalSection {
+  id        String   @id @default(cuid())
+  name      String
+  location  String   @unique
+  type      String
+  isEnabled Boolean  @default(true)
+  content   Json?
+  settings  Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WebsiteSectionTemplate {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  category  String
+  type      String
+  content   Json?
+  settings  Json?
+  thumbnail String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WebsiteAsset {
+  id              String   @id @default(cuid())
+  filename        String
+  originalName    String   @default("")
+  url             String   @unique
+  mimeType        String
+  sizeBytes       Int
+  width           Int?
+  height          Int?
+  altText         String?  @default("")
+  caption         String?
+  description     String?
+  folder          String   @default("general")
+  storageProvider String   @default("local")
+  uploadedById    String?
+  uploadedBy      User?    @relation(fields: [uploadedById], references: [id], onDelete: SetNull)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([mimeType])
+  @@index([folder])
+  @@index([createdAt])
+}
+
+model WebsiteSettings {
+  id                    String   @id @default("default")
+  siteName              String   @default("CAD Directory")
+  tagline               String?
+  logoUrl               String?
+  footerLogoUrl         String?
+  faviconUrl            String?
+  defaultOgImage        String?
+  contactEmail          String?
+  contactPhone          String?
+  businessAddress       String?
+  copyrightText         String?
+  headerSticky          Boolean  @default(true)
+  announcementEnabled   Boolean  @default(false)
+  announcementText      String?
+  announcementLink      String?
+  headerCtaLabel        String?
+  headerCtaUrl          String?
+  newsletterEnabled     Boolean  @default(true)
+  newsletterTitle       String?  @default("Subscribe to our newsletter")
+  newsletterDescription String?
+  socialLinks           Json?
+  legalLinks            Json?
+  contactFormConfig     Json?
+  cookieConsentConfig   Json?
+  googleAnalyticsId     String?
+  googleVerificationId  String?
+  maintenanceMode       Boolean  @default(false)
+  maintenanceMessage    String?
+  updatedAt             DateTime @updatedAt
+}
+
+model WebsiteTheme {
+  id              String   @id @default(cuid())
+  name            String   @unique
+  primaryColor    String   @default("#2563eb")
+  secondaryColor  String   @default("#0f172a")
+  accentColor     String   @default("#3b82f6")
+  backgroundColor String   @default("#ffffff")
+  textColor       String   @default("#0f172a")
+  fontHeading     String   @default("Inter")
+  fontBody        String   @default("Inter")
+  borderRadius    String   @default("0.75rem")
+  maxWidth        String   @default("1280px")
+  isActive        Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model NavigationMenu {
+  id        String           @id @default(cuid())
+  name      String
+  slug      String           @unique
+  location  String           @unique
+  isEnabled Boolean          @default(true)
+  items     NavigationItem[]
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+}
+
+model NavigationItem {
+  id        String           @id @default(cuid())
+  menuId    String
+  menu      NavigationMenu   @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  parentId  String?
+  parent    NavigationItem?  @relation("NavHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  children  NavigationItem[] @relation("NavHierarchy")
+  label     String
+  url       String
+  pageId    String?
+  target    String           @default("_self")
+  icon      String?
+  badgeText String?
+  sortOrder Int              @default(0)
+  isEnabled Boolean          @default(true)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@index([menuId, sortOrder])
+  @@index([parentId])
+}
+
+model UrlRedirect {
+  id              String    @id @default(cuid())
+  sourcePath      String    @unique
+  destinationPath String
+  statusCode      Int       @default(301)
+  isEnabled       Boolean   @default(true)
+  hitCount        Int       @default(0)
+  lastAccessedAt  DateTime?
+  notes           String?
+  createdById     String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([sourcePath, isEnabled])
+}
+
+// Existing Core Models preserved below
+model Product {
+  id             String                 @id @default(cuid())
+  name           String
+  slug           String                 @unique
+  description    String?
+  isRemoved      Boolean                @default(false)
+  status         String                 @default("PENDING")
+  isFeatured     Boolean                @default(false)
+  userId         String?
+  user           User?                  @relation(fields: [userId], references: [id], onDelete: SetNull)
+  categoryId     String?
+  category       Category?              @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  brandId        String?
+  brand          Brand?                 @relation(fields: [brandId], references: [id], onDelete: SetNull)
+  vendorId       String?
+  vendor         Vendor?                @relation(fields: [vendorId], references: [id], onDelete: SetNull)
+  pricingPlans   PricingPlan[]
+  features       ProductFeature[]
+  images         ProductImage[]
+  specifications ProductSpecification[]
+  faqs           FAQ[]
+  questions      ProductQuestion[]
+  alternatives   ProductAlternative[]
+  reviews        Review[]
+  enquiries      Enquiry[]
+  createdAt      DateTime               @default(now())
+  updatedAt      DateTime               @updatedAt
+}
+
+model Category {
+  id          String     @id @default(cuid())
+  name        String     @unique
+  slug        String     @unique
+  description String?
+  parentId    String?
+  parent      Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children    Category[] @relation("CategoryHierarchy")
+  products    Product[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Brand {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  slug        String    @unique
+  description String?
+  logoUrl     String?
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Feature {
+  id          String           @id @default(cuid())
+  name        String           @unique
+  description String?
+  products    ProductFeature[]
+}
+
+model ProductFeature {
+  productId String
+  featureId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  feature   Feature @relation(fields: [featureId], references: [id], onDelete: Cascade)
+
+  @@id([productId, featureId])
+}
+
+model ProductImage {
+  id        String  @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  imageUrl  String
+  caption   String?
+  sortOrder Int     @default(0)
+}
+
+model Specification {
+  id           String                 @id @default(cuid())
+  name         String                 @unique
+  category     String?
+  productSpecs ProductSpecification[]
+}
+
+model ProductSpecification {
+  productId       String
+  specificationId String
+  product         Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
+  specification   Specification @relation(fields: [specificationId], references: [id], onDelete: Cascade)
+  value           String
+
+  @@id([productId, specificationId])
+}
+
+model PricingPlan {
+  id           String  @id @default(cuid())
+  productId    String
+  product      Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  name         String
+  price        Float
+  billingCycle String  @default("monthly")
+  features     Json?
+}
+
+model FAQ {
+  id        String  @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  question  String
+  answer    String
+}
+
+model ProductQuestion {
+  id        String          @id @default(cuid())
+  productId String
+  product   Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  question  String
+  answers   ProductAnswer[]
+  createdAt DateTime        @default(now())
+}
+
+model ProductAnswer {
+  id         String          @id @default(cuid())
+  questionId String
+  question   ProductQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  answer     String
+  createdAt  DateTime        @default(now())
+}
+
+model ProductAlternative {
+  id            String  @id @default(cuid())
+  productId     String
+  product       Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  alternativeId String
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+}
+
+model Enquiry {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  name      String
+  email     String
+  message   String
+  status    String   @default("PENDING")
+  createdAt DateTime @default(now())
+}
+
+model Vendor {
+  id        String    @id @default(cuid())
+  name      String
+  email     String    @unique
+  company   String?
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model BlogPost {
+  id             String             @id @default(cuid())
+  title          String
+  slug           String             @unique
+  content        String
+  excerpt        String?
+  featuredImage  String?
+  status         String             @default("PUBLISHED")
+  scheduledAt    DateTime?
+  readingTime    Int?               @default(3)
+  seoTitle       String?
+  seoDescription String?
+  canonicalUrl   String?
+  ogImage        String?
+  noIndex        Boolean            @default(false)
+  authorId       String?
+  author         User?              @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  categoryId     String?
+  category       BlogCategory?      @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  tags           BlogTag[]
+  revisions      BlogPostRevision[]
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+}
+
+model BlogCategory {
+  id          String     @id @default(cuid())
+  name        String     @unique
+  slug        String     @unique
+  description String?
+  posts       BlogPost[]
+}
+
+model BlogTag {
+  id    String     @id @default(cuid())
+  name  String     @unique
+  slug  String     @unique
+  posts BlogPost[]
+}
+
+model BlogPostRevision {
+  id        String   @id @default(cuid())
+  postId    String
+  post      BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  title     String
+  content   String
+  excerpt   String?
+  snapshot  Json?
+  authorId  String?
+  createdAt DateTime @default(now())
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String?
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model ActivityLog {
+  id         String   @id @default(cuid())
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action     String
+  entityType String?
+  entityId   String?
+  details    String?
+  createdAt  DateTime @default(now())
+
+  @@index([userId])
+  @@index([createdAt])
+}

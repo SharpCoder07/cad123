@@ -1,0 +1,3194 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --font-sans: var(--font-poppins), Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-poppins), Arial, sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+select:not(:disabled),
+summary {
+  cursor: pointer;
+}
+
+button:disabled,
+select:disabled,
+[aria-disabled="true"] {
+  cursor: not-allowed;
+}
+
+a[href] {
+  cursor: pointer;
+}
+
+/* =========================================================
+   CADGram Global Website Theme
+========================================================= */
+
+html {
+  background-color: var(--site-background);
+  color: var(--site-text);
+   font-family: var(--font-poppins), Arial, sans-serif;
+}
+
+body {
+  background-color: var(--site-background);
+  color: var(--site-text);
+   font-family: var(--font-poppins), Arial, sans-serif;
+}
+
+/* Backgrounds */
+
+.site-bg {
+  background-color: var(--site-background);
+}
+
+.site-surface {
+  background-color: var(--site-surface);
+}
+
+.site-primary-bg {
+  background-color: var(--site-primary);
+}
+
+.site-secondary-bg {
+  background-color: var(--site-secondary);
+}
+
+.site-accent-bg {
+  background-color: var(--site-accent);
+}
+
+.site-accent-2-bg {
+  background-color: var(--site-accent-2);
+}
+
+/* Text */
+
+.site-text {
+  color: var(--site-text);
+}
+
+.site-muted {
+  color: var(--site-muted);
+}
+
+.site-primary-text {
+  color: var(--site-primary);
+}
+
+.site-secondary-text {
+  color: var(--site-secondary);
+}
+
+.site-accent-text {
+  color: var(--site-accent);
+}
+
+/* Borders */
+
+.site-border {
+  border-color: var(--site-border);
+}
+
+/* Buttons */
+
+.site-primary-button {
+  background-color: var(--site-primary);
+  color: #ffffff;
+}
+
+.site-primary-button:hover {
+  filter: brightness(0.92);
+}
+
+.site-secondary-button {
+  background-color: var(--site-secondary);
+  color: #ffffff;
+}
+
+.site-secondary-button:hover {
+  filter: brightness(1.15);
+}
+
+/* Links */
+
+.site-link {
+  color: var(--site-primary);
+}
+
+.site-link:hover {
+  filter: brightness(0.85);
+}
+
+/* Category card icon */
+
+.category-card-icon {
+  background-color: var(--site-surface);
+  color: var(--site-primary);
+}
+
+.group:hover .category-card-icon {
+  background-color: var(--site-primary);
+  color: #ffffff;
+}
+
+.featured-product-small-card {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.featured-product-small-card:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 35%,
+    var(--site-border)
+  );
+}
+
+.featured-product-small-card .product-card-title {
+  color: var(--site-text);
+}
+
+.featured-product-small-card:hover .product-card-title {
+  color: var(--site-primary);
+}
+
+.featured-product-small-card .product-card-arrow {
+  color: var(--site-muted);
+}
+
+.featured-product-small-card:hover .product-card-arrow {
+  color: var(--site-primary);
+}
+
+/* =========================================================
+   Brand Section
+========================================================= */
+
+.brand-header-link {
+  color: var(--site-text);
+}
+
+.brand-header-link:hover {
+  color: var(--site-primary);
+}
+
+.brand-primary-link {
+  color: var(--site-primary);
+}
+
+.brand-primary-link:hover {
+  filter: brightness(0.85);
+}
+
+/* Logo cards */
+
+.brand-logo-card {
+  border-color: var(--site-border);
+  background-color: color-mix(
+    in srgb,
+    var(--site-background) 65%,
+    transparent
+  );
+}
+
+.brand-logo-card:hover {
+  background-color: var(--site-background);
+}
+
+/* Keyboard focus */
+
+.brand-logo-card:focus-visible {
+  --tw-ring-color: var(--site-primary);
+}
+
+/* Fallback brand letter */
+
+.brand-logo-fallback {
+  background-color: var(--site-surface);
+  color: var(--site-text);
+}
+
+.brand-logo-card:hover .brand-logo-fallback {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 10%,
+    var(--site-background)
+  );
+
+  color: var(--site-primary);
+}
+
+/* Brand name */
+
+.brand-logo-name {
+  color: var(--site-muted);
+}
+
+.brand-logo-card:hover .brand-logo-name {
+  color: var(--site-text);
+}
+
+/* Explore hover action */
+
+.brand-logo-action {
+  color: var(--site-primary);
+}
+
+/* =========================================================
+   Homepage Blog Section
+========================================================= */
+
+.blog-featured-card:focus-visible,
+.blog-side-card:focus-visible {
+  --tw-ring-color: var(--site-primary);
+}
+
+.blog-side-card {
+  border-color: color-mix(
+    in srgb,
+    white 10%,
+    transparent
+  );
+
+  background-color: color-mix(
+    in srgb,
+    var(--site-secondary) 88%,
+    white
+  );
+}
+
+.blog-side-card:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 38%,
+    transparent
+  );
+}
+
+.blog-side-title {
+  color: white;
+}
+
+.blog-side-card:hover .blog-side-title {
+  color: var(--site-accent);
+}
+
+/* =========================================================
+   Footer
+========================================================= */
+
+.footer-compare-button {
+  background-color: var(--site-primary);
+  color: #ffffff;
+  box-shadow: 0 10px 30px
+    color-mix(
+      in srgb,
+      var(--site-primary) 18%,
+      transparent
+    );
+}
+
+.footer-compare-button:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 14px 36px
+    color-mix(
+      in srgb,
+      var(--site-primary) 25%,
+      transparent
+    );
+}
+
+/* Standard footer links */
+
+.footer-link {
+  color: color-mix(
+    in srgb,
+    white 58%,
+    transparent
+  );
+}
+
+.footer-link:hover {
+  color: #ffffff;
+}
+
+/* Discover CTA */
+
+.footer-discover-link {
+  color: var(--site-accent);
+}
+
+.footer-discover-link:hover {
+  filter: brightness(1.12);
+}
+
+/* =========================================================
+   Product Search
+========================================================= */
+
+.product-search-box {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+  color: var(--site-text);
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
+}
+
+.product-search-box:focus-within {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 45%,
+    var(--site-border)
+  );
+
+  box-shadow:
+    0 0 0 4px
+      color-mix(
+        in srgb,
+        var(--site-primary) 8%,
+        transparent
+      ),
+    0 10px 32px rgba(15, 23, 42, 0.07);
+}
+
+.product-search-input {
+  color: var(--site-text);
+}
+
+.product-search-input::placeholder {
+  color: var(--site-muted);
+}
+
+.product-search-clear {
+  color: var(--site-muted);
+}
+
+.product-search-clear:hover {
+  background-color: var(--site-surface);
+  color: var(--site-text);
+}
+
+/* Dropdown */
+
+.product-search-dropdown {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 30%,
+    var(--site-border)
+  );
+
+  background-color: var(--site-background);
+  color: var(--site-text);
+}
+
+/* Result rows */
+
+.product-search-result:hover {
+  background-color: var(--site-surface);
+}
+
+.product-search-result-image {
+  border-color: var(--site-border);
+  background-color: var(--site-surface);
+}
+
+.product-search-result-title {
+  color: var(--site-text);
+}
+
+.product-search-result:hover
+  .product-search-result-title {
+  color: var(--site-primary);
+}
+
+.product-search-result-arrow {
+  color: var(--site-muted);
+}
+
+.product-search-result:hover
+  .product-search-result-arrow {
+  color: var(--site-primary);
+}
+
+/* Category icon */
+
+.product-search-category-icon {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 9%,
+    var(--site-background)
+  );
+
+  color: var(--site-primary);
+}
+
+.product-search-result:hover
+  .product-search-category-icon {
+  background-color: var(--site-primary);
+  color: #ffffff;
+}
+
+/* Search-all action */
+
+.product-search-all:hover {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 8%,
+    var(--site-background)
+  );
+}
+
+/* Current search chip */
+
+.product-search-chip {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 20%,
+    var(--site-border)
+  );
+
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 8%,
+    var(--site-background)
+  );
+
+  color: var(--site-primary);
+}
+
+.product-search-chip-clear:hover {
+  color: var(--site-text);
+}
+
+/* =========================================================
+   Product Sort
+========================================================= */
+
+.product-sort-select {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+  color: var(--site-text);
+
+  box-shadow: 0 1px 3px
+    color-mix(
+      in srgb,
+      var(--site-secondary) 8%,
+      transparent
+    );
+}
+
+.product-sort-select:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 35%,
+    var(--site-border)
+  );
+}
+
+.product-sort-select:focus {
+  border-color: var(--site-primary);
+
+  box-shadow:
+    0 0 0 4px
+      color-mix(
+        in srgb,
+        var(--site-primary) 9%,
+        transparent
+      ),
+    0 1px 3px
+      color-mix(
+        in srgb,
+        var(--site-secondary) 8%,
+        transparent
+      );
+}
+
+.product-sort-select option {
+  background-color: var(--site-background);
+  color: var(--site-text);
+}
+
+.product-category-filter {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+  color: var(--site-muted);
+}
+
+.product-category-filter:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 30%,
+    var(--site-border)
+  );
+
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 7%,
+    var(--site-background)
+  );
+
+  color: var(--site-primary);
+}
+
+.product-category-filter.is-active {
+  border-color: var(--site-primary);
+  background-color: var(--site-primary);
+  color: #ffffff;
+
+  box-shadow: 0 5px 15px
+    color-mix(
+      in srgb,
+      var(--site-primary) 18%,
+      transparent
+    );
+}
+
+.product-active-filter {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 20%,
+    var(--site-border)
+  );
+
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 7%,
+    var(--site-background)
+  );
+
+  color: var(--site-primary);
+}
+
+.product-active-filter:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 35%,
+    var(--site-border)
+  );
+
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 12%,
+    var(--site-background)
+  );
+}
+
+.product-clear-filters {
+  color: var(--site-muted);
+}
+
+.product-clear-filters:hover {
+  color: #dc2626;
+}
+
+/* =========================================================
+   Product Listing Cards
+========================================================= */
+
+.product-list-card {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.product-list-card:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 30%,
+    var(--site-border)
+  );
+}
+
+.product-list-card:focus-visible {
+  --tw-ring-color: var(--site-primary);
+}
+
+.product-list-image {
+  border-color: var(--site-border);
+  background-color: var(--site-surface);
+}
+
+.product-list-category {
+  border-color: var(--site-border);
+
+  background-color: color-mix(
+    in srgb,
+    var(--site-background) 90%,
+    transparent
+  );
+
+  color: var(--site-muted);
+}
+
+.product-list-title {
+  color: var(--site-text);
+}
+
+.product-list-card:hover
+  .product-list-title {
+  color: var(--site-primary);
+}
+
+.product-list-action {
+  color: var(--site-text);
+}
+
+.product-list-card:hover
+  .product-list-action {
+  color: var(--site-primary);
+}
+
+.product-list-arrow {
+  background-color: var(--site-surface);
+  color: var(--site-muted);
+}
+
+.product-list-card:hover
+  .product-list-arrow {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 9%,
+    var(--site-background)
+  );
+
+  color: var(--site-primary);
+}
+
+/* =========================================================
+   Product Detail
+========================================================= */
+
+.product-detail-hero {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.product-detail-glow-primary,
+.product-detail-visual-glow {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 10%,
+    transparent
+  );
+}
+
+.product-detail-glow-accent {
+  background-color: color-mix(
+    in srgb,
+    var(--site-accent) 9%,
+    transparent
+  );
+}
+
+.product-detail-back {
+  color: var(--site-muted);
+}
+
+.product-detail-back:hover {
+  color: var(--site-primary);
+}
+
+.product-detail-card {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.product-detail-visual {
+  border-color: var(--site-border);
+  background-color: var(--site-surface);
+}
+
+.product-detail-fallback-icon {
+  background-color: var(--site-background);
+  color: var(--site-muted);
+}
+
+.product-detail-category {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 20%,
+    var(--site-border)
+  );
+
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 8%,
+    var(--site-background)
+  );
+
+  color: var(--site-primary);
+}
+
+.product-detail-secondary-button {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+  color: var(--site-text);
+}
+
+.product-detail-secondary-button:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 30%,
+    var(--site-border)
+  );
+
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 7%,
+    var(--site-background)
+  );
+
+  color: var(--site-primary);
+}
+
+/* Pricing */
+
+.product-pricing-card {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.product-pricing-card:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 28%,
+    var(--site-border)
+  );
+}
+
+.product-pricing-card.is-featured {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 40%,
+    var(--site-border)
+  );
+
+  box-shadow: 0 12px 40px
+    color-mix(
+      in srgb,
+      var(--site-primary) 9%,
+      transparent
+    );
+}
+
+.product-pricing-badge {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 8%,
+    var(--site-background)
+  );
+
+  color: var(--site-primary);
+}
+
+/* Features */
+
+.product-feature-card {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.product-feature-card:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 30%,
+    var(--site-border)
+  );
+}
+
+.product-feature-icon {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 9%,
+    var(--site-background)
+  );
+
+  color: var(--site-primary);
+}
+
+.product-feature-card:hover
+  .product-feature-icon {
+  background-color: var(--site-primary);
+  color: #ffffff;
+}
+
+/* Specifications */
+
+.product-specifications {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.product-specification-row {
+  border-color: var(--site-border);
+}
+
+.product-specification-name {
+  background-color: var(--site-surface);
+  color: var(--site-muted);
+}
+
+/* Gallery */
+
+.product-gallery-card {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.product-gallery-card:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 30%,
+    var(--site-border)
+  );
+}
+
+/* Reviews */
+
+.product-review-avatar {
+  background-color: var(--site-secondary);
+}
+
+/* FAQs */
+
+.product-faq-number {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 9%,
+    var(--site-background)
+  );
+
+  color: var(--site-primary);
+}
+
+/* Q&A */
+
+.product-question-badge,
+.product-answer-badge {
+  background-color: var(--site-primary);
+}
+
+.product-answer-list {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 22%,
+    var(--site-border)
+  );
+}
+
+.product-answer-card {
+  background-color: var(--site-surface);
+}
+
+/* Alternatives */
+
+.product-alternative-card {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.product-alternative-card:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 30%,
+    var(--site-border)
+  );
+}
+
+.product-alternative-logo {
+  background-color: var(--site-surface);
+  color: var(--site-muted);
+}
+
+.product-alternative-arrow {
+  color: var(--site-muted);
+}
+
+.product-alternative-title {
+  color: var(--site-text);
+}
+
+.product-alternative-action {
+  color: var(--site-primary);
+}
+
+.product-alternative-card:hover
+  .product-alternative-arrow,
+.product-alternative-card:hover
+  .product-alternative-title {
+  color: var(--site-primary);
+}
+
+/* Empty states */
+
+.product-section-empty {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.product-section-empty-icon {
+  background-color: var(--site-surface);
+  color: var(--site-muted);
+}
+
+/* Enquiry */
+
+.product-enquiry-primary-glow {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 22%,
+    transparent
+  );
+}
+
+.product-enquiry-accent-glow {
+  background-color: color-mix(
+    in srgb,
+    var(--site-accent) 20%,
+    transparent
+  );
+}
+
+.product-enquiry-check {
+  background-color: color-mix(
+    in srgb,
+    var(--site-accent) 18%,
+    transparent
+  );
+
+  color: var(--site-accent);
+}
+
+/* =========================================================
+   Product Section Navigation
+========================================================= */
+
+.product-section-nav {
+  border-color: var(--site-border);
+
+  background-color: color-mix(
+    in srgb,
+    var(--site-background) 95%,
+    transparent
+  );
+
+  color: var(--site-text);
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.product-section-nav-link {
+  border-color: transparent;
+  color: var(--site-muted);
+}
+
+.product-section-nav-link:hover {
+  color: var(--site-primary);
+}
+
+.product-section-nav-link.is-active {
+  border-color: var(--site-primary);
+  color: var(--site-primary);
+}
+
+/* =========================================================
+   Review Form
+========================================================= */
+
+.review-form {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.review-form-eyebrow {
+  color: var(--site-primary);
+}
+
+.review-form-title,
+.review-form-label {
+  color: var(--site-text);
+}
+
+.review-form-description {
+  color: var(--site-muted);
+}
+
+.review-form-control {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+  color: var(--site-text);
+}
+
+.review-form-control::placeholder {
+  color: var(--site-muted);
+}
+
+.review-form-control:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 30%,
+    var(--site-border)
+  );
+}
+
+.review-form-control:focus {
+  border-color: var(--site-primary);
+
+  box-shadow:
+    0 0 0 4px
+      color-mix(
+        in srgb,
+        var(--site-primary) 9%,
+        transparent
+      );
+}
+
+.review-form-control option {
+  background-color: var(--site-background);
+  color: var(--site-text);
+}
+
+/* =========================================================
+   Question Form
+========================================================= */
+
+.question-form {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.question-form-eyebrow {
+  color: var(--site-primary);
+}
+
+.question-form-title,
+.question-form-label {
+  color: var(--site-text);
+}
+
+.question-form-description {
+  color: var(--site-muted);
+}
+
+.question-form-control {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+  color: var(--site-text);
+}
+
+.question-form-control::placeholder {
+  color: var(--site-muted);
+}
+
+.question-form-control:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 30%,
+    var(--site-border)
+  );
+}
+
+.question-form-control:focus {
+  border-color: var(--site-primary);
+
+  box-shadow:
+    0 0 0 4px
+      color-mix(
+        in srgb,
+        var(--site-primary) 9%,
+        transparent
+      );
+}
+
+/* =========================================================
+   Answer Form
+========================================================= */
+
+.answer-form-label {
+  color: var(--site-text);
+}
+
+.answer-form-control {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+  color: var(--site-text);
+}
+
+.answer-form-control::placeholder {
+  color: var(--site-muted);
+}
+
+.answer-form-control:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 30%,
+    var(--site-border)
+  );
+}
+
+.answer-form-control:focus {
+  border-color: var(--site-primary);
+
+  box-shadow:
+    0 0 0 4px
+      color-mix(
+        in srgb,
+        var(--site-primary) 9%,
+        transparent
+      );
+}
+
+/* =========================================================
+   Enquiry Form
+========================================================= */
+
+.enquiry-form-label {
+  color: var(--site-text);
+}
+
+.enquiry-form-control {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+  color: var(--site-text);
+}
+
+.enquiry-form-control::placeholder {
+  color: var(--site-muted);
+}
+
+.enquiry-form-control:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 30%,
+    var(--site-border)
+  );
+}
+
+.enquiry-form-control:focus {
+  border-color: var(--site-primary);
+
+  box-shadow:
+    0 0 0 4px
+      color-mix(
+        in srgb,
+        var(--site-primary) 9%,
+        transparent
+      );
+}
+
+/* =========================================================
+   Compare Page
+========================================================= */
+
+.compare-page-hero {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.compare-page-glow-primary {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 12%,
+    transparent
+  );
+}
+
+.compare-page-glow-accent {
+  background-color: color-mix(
+    in srgb,
+    var(--site-accent) 11%,
+    transparent
+  );
+}
+
+.compare-page-grid {
+  background-image:
+    linear-gradient(
+      color-mix(
+        in srgb,
+        var(--site-text) 2.5%,
+        transparent
+      )
+        1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(
+        in srgb,
+        var(--site-text) 2.5%,
+        transparent
+      )
+        1px,
+      transparent 1px
+    );
+
+  background-size: 48px 48px;
+}
+
+.compare-page-back {
+  color: var(--site-muted);
+}
+
+.compare-page-back:hover {
+  color: var(--site-primary);
+}
+
+.compare-page-eyebrow {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 18%,
+    var(--site-border)
+  );
+
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 8%,
+    var(--site-background)
+  );
+
+  color: var(--site-primary);
+}
+
+.compare-page-icon {
+  background-color: var(--site-secondary);
+
+  box-shadow:
+    0 12px 32px
+      color-mix(
+        in srgb,
+        var(--site-secondary) 18%,
+        transparent
+      );
+}
+
+/* =========================================================
+   Compare Selector
+========================================================= */
+
+.compare-workspace,
+.compare-table-card,
+.compare-modal {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+  color: var(--site-text);
+}
+
+.compare-divider {
+  border-color: var(--site-border);
+}
+
+.compare-title {
+  color: var(--site-text);
+}
+
+.compare-muted {
+  color: var(--site-muted);
+}
+
+.compare-primary-text {
+  color: var(--site-primary);
+}
+
+.compare-primary-icon {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 9%,
+    var(--site-background)
+  );
+  color: var(--site-primary);
+}
+
+.compare-selected-count {
+  background-color: var(--site-surface);
+  color: var(--site-muted);
+}
+
+/* Slots */
+
+.compare-slot {
+  border-color: var(--site-border);
+}
+
+.compare-slot.is-selected {
+  background-color: var(--site-background);
+}
+
+.compare-slot.is-empty {
+  background-color: color-mix(
+    in srgb,
+    var(--site-surface) 72%,
+    transparent
+  );
+}
+
+.compare-slot-number {
+  background-color: var(--site-background);
+  color: var(--site-muted);
+}
+
+.compare-product-logo {
+  border-color: var(--site-border);
+  background-color: var(--site-surface);
+}
+
+.compare-change-button {
+  border-color: var(--site-border);
+  color: var(--site-text);
+}
+
+.compare-change-button:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 30%,
+    var(--site-border)
+  );
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 7%,
+    var(--site-background)
+  );
+  color: var(--site-primary);
+}
+
+/* Add product */
+
+.compare-add-icon {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+  color: var(--site-muted);
+}
+
+.group:hover .compare-add-icon {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 45%,
+    var(--site-border)
+  );
+  color: var(--site-primary);
+}
+
+.compare-add-title {
+  color: var(--site-text);
+}
+
+.group:hover .compare-add-title {
+  color: var(--site-primary);
+}
+
+/* Empty */
+
+.compare-empty {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.compare-empty-icon {
+  background-color: var(--site-surface);
+  color: var(--site-muted);
+}
+
+/* Comparison */
+
+.compare-hint {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 8%,
+    var(--site-background)
+  );
+  color: var(--site-primary);
+}
+
+.compare-mobile-hint {
+  border-color: var(--site-border);
+  background-color: var(--site-surface);
+  color: var(--site-muted);
+}
+
+.compare-table-header {
+  background-color: var(--site-surface);
+}
+
+.compare-sticky-header {
+  border-color: var(--site-border);
+  background-color: var(--site-surface);
+  color: var(--site-muted);
+}
+
+.compare-table-cell {
+  border-color: var(--site-border);
+  color: var(--site-text);
+}
+
+.compare-label {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+  color: var(--site-muted);
+}
+
+.compare-row:hover {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 3%,
+    var(--site-background)
+  );
+}
+
+.compare-group-row {
+  border-color: var(--site-border);
+  background-color: var(--site-surface);
+  color: var(--site-muted);
+}
+
+.compare-pricing-plan {
+  background-color: var(--site-surface);
+}
+
+.compare-unavailable {
+  color: color-mix(
+    in srgb,
+    var(--site-muted) 35%,
+    transparent
+  );
+}
+
+.compare-product-link {
+  color: var(--site-primary);
+}
+
+.compare-product-link:hover {
+  filter: brightness(0.82);
+}
+
+/* Modal */
+
+.compare-modal-backdrop {
+  background-color: color-mix(
+    in srgb,
+    var(--site-secondary) 58%,
+    transparent
+  );
+}
+
+.compare-modal-close {
+  color: var(--site-muted);
+}
+
+.compare-modal-close:hover {
+  background-color: var(--site-surface);
+  color: var(--site-text);
+}
+
+.compare-search-input {
+  border-color: var(--site-border);
+  background-color: var(--site-surface);
+  color: var(--site-text);
+}
+
+.compare-search-input::placeholder {
+  color: var(--site-muted);
+}
+
+.compare-search-input:focus {
+  border-color: var(--site-primary);
+  background-color: var(--site-background);
+
+  box-shadow:
+    0 0 0 4px
+      color-mix(
+        in srgb,
+        var(--site-primary) 9%,
+        transparent
+      );
+}
+
+.compare-modal-product:hover {
+  background-color: var(--site-surface);
+}
+
+.compare-modal-product.is-selected {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 8%,
+    var(--site-background)
+  );
+}
+
+.compare-selected-check {
+  background-color: var(--site-primary);
+}
+
+/* =========================================================
+   Public Blog Page
+========================================================= */
+
+.blog-page-hero {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 30%,
+    transparent
+  );
+
+  background-color: var(--site-secondary);
+}
+
+.blog-page-glow-primary {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 25%,
+    transparent
+  );
+}
+
+.blog-page-glow-accent {
+  background-color: color-mix(
+    in srgb,
+    var(--site-accent) 16%,
+    transparent
+  );
+}
+
+.blog-page-badge {
+  border-color: color-mix(
+    in srgb,
+    white 12%,
+    transparent
+  );
+
+  background-color: color-mix(
+    in srgb,
+    white 6%,
+    transparent
+  );
+
+  color: var(--site-accent);
+}
+
+/* Featured article */
+
+.blog-page-featured {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.blog-page-image-fallback {
+  background:
+    linear-gradient(
+      135deg,
+      var(--site-secondary),
+      color-mix(
+        in srgb,
+        var(--site-secondary) 82%,
+        var(--site-primary)
+      )
+    );
+}
+
+.blog-page-image-badge {
+  background-color: color-mix(
+    in srgb,
+    var(--site-background) 95%,
+    transparent
+  );
+
+  color: var(--site-text);
+}
+
+.blog-page-featured-title {
+  color: var(--site-text);
+}
+
+.group:hover .blog-page-featured-title {
+  color: var(--site-primary);
+}
+
+/* Article cards */
+
+.blog-page-card {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.blog-page-card:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 30%,
+    var(--site-border)
+  );
+}
+
+.blog-page-card-fallback {
+  background:
+    linear-gradient(
+      135deg,
+      var(--site-surface),
+      color-mix(
+        in srgb,
+        var(--site-primary) 8%,
+        var(--site-surface)
+      )
+    );
+}
+
+.blog-page-card-fallback-icon {
+  background-color: var(--site-background);
+  color: var(--site-muted);
+}
+
+.blog-page-card-title {
+  color: var(--site-text);
+}
+
+.group:hover .blog-page-card-title {
+  color: var(--site-primary);
+}
+
+.blog-page-read-link {
+  color: var(--site-primary);
+}
+
+.blog-page-read-link:hover {
+  filter: brightness(0.82);
+}
+
+/* CTA */
+
+.blog-page-cta {
+  background-color: var(--site-secondary);
+}
+
+.blog-page-cta-primary-glow {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 22%,
+    transparent
+  );
+}
+
+.blog-page-cta-accent-glow {
+  background-color: color-mix(
+    in srgb,
+    var(--site-accent) 18%,
+    transparent
+  );
+}
+
+.blog-page-cta-primary {
+  background-color: var(--site-primary);
+  color: #ffffff;
+}
+
+.blog-page-cta-primary:hover {
+  filter: brightness(1.08);
+}
+
+/* Empty state */
+
+.blog-page-empty {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.blog-page-empty-icon {
+  background-color: var(--site-surface);
+  color: var(--site-muted);
+}
+
+/* =========================================================
+   Public Blog Detail
+========================================================= */
+
+.blog-detail-hero {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 30%,
+    transparent
+  );
+  background-color: var(--site-secondary);
+}
+
+.blog-detail-glow-primary {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 25%,
+    transparent
+  );
+}
+
+.blog-detail-glow-accent {
+  background-color: color-mix(
+    in srgb,
+    var(--site-accent) 17%,
+    transparent
+  );
+}
+
+.blog-detail-back {
+  color: color-mix(in srgb, white 58%, transparent);
+}
+
+.blog-detail-back:hover {
+  color: #ffffff;
+}
+
+.blog-detail-badge {
+  border-color: color-mix(
+    in srgb,
+    white 12%,
+    transparent
+  );
+  background-color: color-mix(
+    in srgb,
+    white 6%,
+    transparent
+  );
+  color: var(--site-accent);
+}
+
+/* Featured image */
+
+.blog-detail-featured-image {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+/* Article */
+
+.blog-detail-article,
+.blog-detail-navigation,
+.blog-detail-sidebar-card {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.blog-detail-intro {
+  border-color: var(--site-primary);
+  color: var(--site-text);
+}
+
+.blog-detail-content {
+  color: var(--site-text);
+}
+
+.blog-detail-link {
+  color: var(--site-primary);
+}
+
+.blog-detail-link:hover {
+  filter: brightness(0.82);
+}
+
+/* Sidebar CTA */
+
+.blog-detail-sidebar-cta {
+  background-color: var(--site-secondary);
+}
+
+.blog-detail-sidebar-glow {
+  background-color: color-mix(
+    in srgb,
+    var(--site-accent) 18%,
+    transparent
+  );
+}
+
+.blog-detail-sidebar-primary {
+  background-color: var(--site-primary);
+  color: #ffffff;
+}
+
+.blog-detail-sidebar-primary:hover {
+  filter: brightness(1.08);
+}
+
+/* Bottom CTA */
+
+.blog-detail-secondary-button {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+  color: var(--site-text);
+}
+
+.blog-detail-secondary-button:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 30%,
+    var(--site-border)
+  );
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 7%,
+    var(--site-background)
+  );
+  color: var(--site-primary);
+}
+
+/* =========================================================
+   Public Categories Page
+========================================================= */
+
+.category-page-hero {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.category-page-glow-primary {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 11%,
+    transparent
+  );
+}
+
+.category-page-glow-accent {
+  background-color: color-mix(
+    in srgb,
+    var(--site-accent) 9%,
+    transparent
+  );
+}
+
+.category-page-eyebrow {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 20%,
+    var(--site-border)
+  );
+
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 8%,
+    var(--site-background)
+  );
+
+  color: var(--site-primary);
+}
+
+.category-page-count {
+  border: 1px solid var(--site-border);
+  background-color: var(--site-background);
+  color: var(--site-muted);
+}
+
+/* Category cards */
+
+.category-page-card {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.category-page-card:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 30%,
+    var(--site-border)
+  );
+}
+
+.category-page-card:focus-visible {
+  --tw-ring-color: var(--site-primary);
+}
+
+.category-page-card-accent.is-primary {
+  background-color: var(--site-primary);
+}
+
+.category-page-card-accent.is-accent {
+  background-color: var(--site-accent);
+}
+
+.category-page-card-accent.is-accent-2 {
+  background-color: var(--site-accent-2);
+}
+
+.category-page-card-icon {
+  background-color: var(--site-surface);
+  color: var(--site-primary);
+}
+
+.category-page-card:hover .category-page-card-icon {
+  background-color: var(--site-primary);
+  color: #ffffff;
+}
+
+.category-page-card-title {
+  color: var(--site-text);
+}
+
+.category-page-card:hover .category-page-card-title {
+  color: var(--site-primary);
+}
+
+.category-page-card-action {
+  color: var(--site-primary);
+}
+
+/* Empty state */
+
+.category-page-empty {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.category-page-empty-icon {
+  background-color: var(--site-surface);
+  color: var(--site-muted);
+}
+
+/* =========================================================
+   Public Category Detail
+========================================================= */
+
+.category-detail-hero {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.category-detail-glow-primary {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 11%,
+    transparent
+  );
+}
+
+.category-detail-glow-accent {
+  background-color: color-mix(
+    in srgb,
+    var(--site-accent) 9%,
+    transparent
+  );
+}
+
+.category-detail-back {
+  color: var(--site-muted);
+}
+
+.category-detail-back:hover {
+  color: var(--site-primary);
+}
+
+.category-detail-eyebrow {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 20%,
+    var(--site-border)
+  );
+
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 8%,
+    var(--site-background)
+  );
+
+  color: var(--site-primary);
+}
+
+.category-detail-count {
+  border: 1px solid var(--site-border);
+  background-color: var(--site-surface);
+  color: var(--site-muted);
+}
+
+/* Product cards */
+
+.category-product-card {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.category-product-card:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 30%,
+    var(--site-border)
+  );
+}
+
+.category-product-card:focus-visible {
+  --tw-ring-color: var(--site-primary);
+}
+
+.category-product-visual {
+  border-bottom: 1px solid var(--site-border);
+  background-color: var(--site-surface);
+}
+
+.category-product-glow {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 8%,
+    transparent
+  );
+}
+
+.category-product-fallback {
+  background-color: var(--site-background);
+  color: var(--site-muted);
+}
+
+.category-product-card:hover .category-product-fallback {
+  background-color: var(--site-primary);
+  color: #ffffff;
+}
+
+.category-product-title {
+  color: var(--site-text);
+}
+
+.category-product-card:hover .category-product-title {
+  color: var(--site-primary);
+}
+
+.category-product-action {
+  color: var(--site-primary);
+}
+
+/* Empty state */
+
+.category-detail-empty {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.category-detail-empty-icon {
+  background-color: var(--site-surface);
+  color: var(--site-muted);
+}
+
+/* =========================================================
+   Public Brands Page
+========================================================= */
+
+.brands-page-hero {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.brands-page-glow-primary {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 11%,
+    transparent
+  );
+}
+
+.brands-page-glow-accent {
+  background-color: color-mix(
+    in srgb,
+    var(--site-accent) 9%,
+    transparent
+  );
+}
+
+.brands-page-eyebrow {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 20%,
+    var(--site-border)
+  );
+
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 8%,
+    var(--site-background)
+  );
+
+  color: var(--site-primary);
+}
+
+.brands-page-count {
+  border-color: var(--site-border);
+  background-color: var(--site-surface);
+  color: var(--site-muted);
+}
+
+/* Brand cards */
+
+.brands-page-card {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.brands-page-card:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 30%,
+    var(--site-border)
+  );
+}
+
+.brands-page-card:focus-visible {
+  --tw-ring-color: var(--site-primary);
+}
+
+.brands-page-logo-area {
+  border-bottom: 1px solid var(--site-border);
+  background-color: var(--site-surface);
+}
+
+.brands-page-logo-glow {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 7%,
+    transparent
+  );
+}
+
+.brands-page-logo-fallback {
+  background-color: var(--site-background);
+  color: var(--site-text);
+}
+
+.brands-page-card:hover .brands-page-logo-fallback {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 10%,
+    var(--site-background)
+  );
+
+  color: var(--site-primary);
+}
+
+.brands-page-card-title {
+  color: var(--site-text);
+}
+
+.brands-page-card:hover .brands-page-card-title {
+  color: var(--site-primary);
+}
+
+.brands-page-card-action {
+  color: var(--site-primary);
+}
+
+/* Empty state */
+
+.brands-page-empty {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.brands-page-empty-icon {
+  background-color: var(--site-surface);
+  color: var(--site-muted);
+}
+
+/* =========================================================
+   Public Brand Detail
+========================================================= */
+
+.brand-detail-hero {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.brand-detail-glow-primary {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 11%,
+    transparent
+  );
+}
+
+.brand-detail-glow-accent {
+  background-color: color-mix(
+    in srgb,
+    var(--site-accent) 9%,
+    transparent
+  );
+}
+
+.brand-detail-back {
+  color: var(--site-muted);
+}
+
+.brand-detail-back:hover {
+  color: var(--site-primary);
+}
+
+/* Brand profile */
+
+.brand-detail-logo-panel {
+  border-color: var(--site-border);
+  background-color: var(--site-surface);
+}
+
+.brand-detail-logo-glow {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 9%,
+    transparent
+  );
+}
+
+.brand-detail-logo-fallback {
+  background-color: var(--site-background);
+  color: var(--site-primary);
+  box-shadow: 0 10px 30px
+    color-mix(
+      in srgb,
+      var(--site-primary) 10%,
+      transparent
+    );
+}
+
+.brand-detail-eyebrow {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 20%,
+    var(--site-border)
+  );
+
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 8%,
+    var(--site-background)
+  );
+
+  color: var(--site-primary);
+}
+
+.brand-detail-count {
+  border-color: var(--site-border);
+  background-color: var(--site-surface);
+  color: var(--site-muted);
+}
+
+.brand-detail-website {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 9%,
+    var(--site-background)
+  );
+
+  color: var(--site-primary);
+}
+
+.brand-detail-website:hover {
+  background-color: var(--site-primary);
+  color: #ffffff;
+}
+
+/* Product cards */
+
+.brand-product-card {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.brand-product-card:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 30%,
+    var(--site-border)
+  );
+}
+
+.brand-product-card:focus-visible {
+  --tw-ring-color: var(--site-primary);
+}
+
+.brand-product-visual {
+  border-bottom: 1px solid var(--site-border);
+  background-color: var(--site-surface);
+}
+
+.brand-product-glow {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 8%,
+    transparent
+  );
+}
+
+.brand-product-fallback {
+  background-color: var(--site-background);
+  color: var(--site-muted);
+}
+
+.brand-product-card:hover .brand-product-fallback {
+  background-color: var(--site-primary);
+  color: #ffffff;
+}
+
+.brand-product-title {
+  color: var(--site-text);
+}
+
+.brand-product-card:hover .brand-product-title {
+  color: var(--site-primary);
+}
+
+.brand-product-action {
+  color: var(--site-primary);
+}
+
+/* Empty state */
+
+.brand-detail-empty {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.brand-detail-empty-icon {
+  background-color: var(--site-surface);
+  color: var(--site-muted);
+}
+
+/* =========================================================
+   Public Contact Page
+========================================================= */
+
+.contact-page-hero {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+}
+
+.contact-page-glow-primary {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 11%,
+    transparent
+  );
+}
+
+.contact-page-glow-accent {
+  background-color: color-mix(
+    in srgb,
+    var(--site-accent) 9%,
+    transparent
+  );
+}
+
+.contact-page-eyebrow {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 20%,
+    var(--site-border)
+  );
+
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 8%,
+    var(--site-background)
+  );
+
+  color: var(--site-primary);
+}
+
+/* Main contact shell */
+
+.contact-page-shell {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+
+  box-shadow:
+    0 20px 60px
+      color-mix(
+        in srgb,
+        var(--site-secondary) 7%,
+        transparent
+      );
+}
+
+/* Contact information */
+
+.contact-info-panel {
+  background-color: var(--site-secondary);
+}
+
+.contact-info-glow {
+  background-color: color-mix(
+    in srgb,
+    var(--site-accent) 16%,
+    transparent
+  );
+}
+
+.contact-info-item {
+  border-color: color-mix(
+    in srgb,
+    white 10%,
+    transparent
+  );
+
+  background-color: color-mix(
+    in srgb,
+    white 4%,
+    transparent
+  );
+}
+
+a.contact-info-item:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--site-accent) 35%,
+    transparent
+  );
+
+  background-color: color-mix(
+    in srgb,
+    white 7%,
+    transparent
+  );
+}
+
+.contact-info-icon {
+  background-color: color-mix(
+    in srgb,
+    var(--site-accent) 14%,
+    transparent
+  );
+
+  color: var(--site-accent);
+}
+
+a.contact-info-item:hover .contact-info-icon {
+  background-color: var(--site-accent);
+  color: var(--site-secondary);
+}
+
+.contact-explore-link {
+  color: var(--site-accent);
+}
+
+.contact-explore-link:hover {
+  filter: brightness(1.12);
+}
+
+/* Contact form */
+
+.contact-form-panel {
+  background-color: var(--site-background);
+}
+
+.contact-form-label {
+  color: var(--site-text);
+}
+
+.contact-form-control {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+  color: var(--site-text);
+}
+
+.contact-form-control::placeholder {
+  color: color-mix(
+    in srgb,
+    var(--site-muted) 70%,
+    transparent
+  );
+}
+
+.contact-form-control:hover:not(:disabled) {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 35%,
+    var(--site-border)
+  );
+}
+
+.contact-form-control:focus {
+  border-color: var(--site-primary);
+
+  box-shadow:
+    0 0 0 3px
+      color-mix(
+        in srgb,
+        var(--site-primary) 12%,
+        transparent
+      );
+}
+
+.contact-submit-spinner {
+  border-color: color-mix(
+    in srgb,
+    white 35%,
+    transparent
+  );
+
+  border-top-color: #ffffff;
+
+  animation: contact-submit-spin 0.7s linear infinite;
+}
+
+@keyframes contact-submit-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   Public Login Page
+========================================================= */
+
+.login-page-shell {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+
+  box-shadow:
+    0 24px 70px
+      color-mix(
+        in srgb,
+        var(--site-secondary) 8%,
+        transparent
+      );
+}
+
+/* Dark brand panel */
+
+.login-brand-panel {
+  background-color: var(--site-secondary);
+}
+
+.login-glow-primary {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 18%,
+    transparent
+  );
+}
+
+.login-glow-accent {
+  background-color: color-mix(
+    in srgb,
+    var(--site-accent) 15%,
+    transparent
+  );
+}
+
+.login-grid {
+  background-image:
+    linear-gradient(
+      color-mix(in srgb, white 4%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, white 4%, transparent) 1px,
+      transparent 1px
+    );
+
+  background-size: 42px 42px;
+}
+
+.login-brand-badge {
+  border-color: color-mix(
+    in srgb,
+    var(--site-accent) 30%,
+    transparent
+  );
+
+  background-color: color-mix(
+    in srgb,
+    var(--site-accent) 10%,
+    transparent
+  );
+
+  color: var(--site-accent);
+}
+
+.login-benefit {
+  border-color: color-mix(
+    in srgb,
+    white 9%,
+    transparent
+  );
+
+  background-color: color-mix(
+    in srgb,
+    white 4%,
+    transparent
+  );
+}
+
+.login-benefit-icon {
+  background-color: color-mix(
+    in srgb,
+    var(--site-accent) 13%,
+    transparent
+  );
+
+  color: var(--site-accent);
+}
+
+/* Form */
+
+.login-form-panel {
+  background-color: var(--site-background);
+}
+
+.login-mobile-icon {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 9%,
+    var(--site-background)
+  );
+
+  color: var(--site-primary);
+}
+
+.login-form-label {
+  color: var(--site-text);
+}
+
+.login-form-control {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+  color: var(--site-text);
+}
+
+.login-form-control::placeholder {
+  color: color-mix(
+    in srgb,
+    var(--site-muted) 70%,
+    transparent
+  );
+}
+
+.login-form-control:hover:not(:disabled) {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 35%,
+    var(--site-border)
+  );
+}
+
+.login-form-control:focus {
+  border-color: var(--site-primary);
+
+  box-shadow:
+    0 0 0 3px
+      color-mix(
+        in srgb,
+        var(--site-primary) 12%,
+        transparent
+      );
+}
+
+.login-password-toggle {
+  color: var(--site-muted);
+}
+
+.login-password-toggle:hover:not(:disabled) {
+  background-color: var(--site-surface);
+  color: var(--site-primary);
+}
+
+.login-register-link {
+  color: var(--site-primary);
+}
+
+.login-register-link:hover {
+  filter: brightness(0.85);
+}
+
+.login-spinner {
+  border-color: color-mix(
+    in srgb,
+    white 35%,
+    transparent
+  );
+
+  border-top-color: #ffffff;
+
+  animation: login-spin 0.7s linear infinite;
+}
+
+@keyframes login-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   Public Register Page
+========================================================= */
+
+.register-page-shell {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+
+  box-shadow:
+    0 24px 70px
+      color-mix(
+        in srgb,
+        var(--site-secondary) 8%,
+        transparent
+      );
+}
+
+/* Brand panel */
+
+.register-brand-panel {
+  background-color: var(--site-secondary);
+}
+
+.register-glow-primary {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 18%,
+    transparent
+  );
+}
+
+.register-glow-accent {
+  background-color: color-mix(
+    in srgb,
+    var(--site-accent) 15%,
+    transparent
+  );
+}
+
+.register-grid {
+  background-image:
+    linear-gradient(
+      color-mix(in srgb, white 4%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, white 4%, transparent) 1px,
+      transparent 1px
+    );
+
+  background-size: 42px 42px;
+}
+
+.register-brand-badge {
+  border-color: color-mix(
+    in srgb,
+    var(--site-accent) 30%,
+    transparent
+  );
+
+  background-color: color-mix(
+    in srgb,
+    var(--site-accent) 10%,
+    transparent
+  );
+
+  color: var(--site-accent);
+}
+
+.register-benefit {
+  border-color: color-mix(
+    in srgb,
+    white 9%,
+    transparent
+  );
+
+  background-color: color-mix(
+    in srgb,
+    white 4%,
+    transparent
+  );
+}
+
+.register-benefit-icon {
+  background-color: color-mix(
+    in srgb,
+    var(--site-accent) 13%,
+    transparent
+  );
+
+  color: var(--site-accent);
+}
+
+/* Form */
+
+.register-form-panel {
+  background-color: var(--site-background);
+}
+
+.register-mobile-icon {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 9%,
+    var(--site-background)
+  );
+
+  color: var(--site-primary);
+}
+
+.register-form-label {
+  color: var(--site-text);
+}
+
+.register-form-control {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+  color: var(--site-text);
+}
+
+.register-form-control::placeholder {
+  color: color-mix(
+    in srgb,
+    var(--site-muted) 70%,
+    transparent
+  );
+}
+
+.register-form-control:hover:not(:disabled) {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 35%,
+    var(--site-border)
+  );
+}
+
+.register-form-control:focus {
+  border-color: var(--site-primary);
+
+  box-shadow:
+    0 0 0 3px
+      color-mix(
+        in srgb,
+        var(--site-primary) 12%,
+        transparent
+      );
+}
+
+.register-password-toggle {
+  color: var(--site-muted);
+}
+
+.register-password-toggle:hover:not(:disabled) {
+  background-color: var(--site-surface);
+  color: var(--site-primary);
+}
+
+.register-login-link {
+  color: var(--site-primary);
+}
+
+.register-login-link:hover {
+  filter: brightness(0.85);
+}
+
+.register-spinner {
+  border-color: color-mix(
+    in srgb,
+    white 35%,
+    transparent
+  );
+
+  border-top-color: #ffffff;
+
+  animation: register-spin 0.7s linear infinite;
+}
+
+@keyframes register-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   Public 404 Page
+========================================================= */
+
+.not-found-page {
+  color: var(--site-text);
+}
+
+.not-found-glow-primary {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 12%,
+    transparent
+  );
+}
+
+.not-found-glow-accent {
+  background-color: color-mix(
+    in srgb,
+    var(--site-accent) 8%,
+    transparent
+  );
+}
+
+.not-found-number {
+  color: color-mix(
+    in srgb,
+    var(--site-primary) 14%,
+    var(--site-surface)
+  );
+}
+
+.not-found-badge {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 20%,
+    var(--site-border)
+  );
+
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 8%,
+    var(--site-background)
+  );
+
+  color: var(--site-primary);
+}
+
+.not-found-secondary-button {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+  color: var(--site-text);
+}
+
+.not-found-secondary-button:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 25%,
+    var(--site-border)
+  );
+
+  background-color: var(--site-background);
+  color: var(--site-primary);
+
+  box-shadow:
+    0 8px 24px
+      color-mix(
+        in srgb,
+        var(--site-secondary) 6%,
+        transparent
+      );
+}
+
+.not-found-secondary-button:focus-visible,
+.not-found-back:focus-visible {
+  outline: 2px solid var(--site-primary);
+  outline-offset: 3px;
+}
+
+.not-found-back {
+  color: var(--site-muted);
+}
+
+.not-found-back:hover {
+  color: var(--site-primary);
+}
+
+/* =========================================================
+   Public Error Page
+========================================================= */
+
+.error-page {
+  color: var(--site-text);
+}
+
+.error-page-glow-primary {
+  background-color: color-mix(
+    in srgb,
+    var(--site-primary) 9%,
+    transparent
+  );
+}
+
+/* Error remains semantic red */
+
+.error-page-icon {
+  border: 1px solid
+    color-mix(
+      in srgb,
+      #ef4444 18%,
+      transparent
+    );
+
+  background-color: color-mix(
+    in srgb,
+    #ef4444 8%,
+    var(--site-background)
+  );
+
+  color: #ef4444;
+
+  box-shadow:
+    0 12px 35px
+      color-mix(
+        in srgb,
+        #ef4444 8%,
+        transparent
+      );
+}
+
+/* Secondary action */
+
+.error-page-secondary-button {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+  color: var(--site-text);
+}
+
+.error-page-secondary-button:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--site-primary) 25%,
+    var(--site-border)
+  );
+
+  color: var(--site-primary);
+
+  box-shadow:
+    0 8px 24px
+      color-mix(
+        in srgb,
+        var(--site-secondary) 6%,
+        transparent
+      );
+}
+
+.error-page-secondary-button:focus-visible {
+  outline: 2px solid var(--site-primary);
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   Global Public Loading State
+========================================================= */
+
+.loading-page {
+  color: var(--site-text);
+}
+
+.loading-page-icon {
+  border-color: var(--site-border);
+  background-color: var(--site-background);
+
+  box-shadow:
+    0 8px 28px
+      color-mix(
+        in srgb,
+        var(--site-secondary) 6%,
+        transparent
+      );
+}
+
+.loading-page-spinner {
+  color: var(--site-primary);
+}
+
+@layer components {
+  .profile-input {
+    @apply w-full rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-900 outline-none transition focus:border-gray-400 focus:ring-2 focus:ring-gray-100;
+  }
+}
+
+
+/* =========================================================
+   CADGram Admin Typography
+========================================================= */
+
+.admin-panel {
+  font-family: var(--font-admin-inter), Arial, sans-serif;
+
+  /* Centralized font sizes */
+  --admin-text-xs: 12px;
+  --admin-text-sm: 14px;
+  --admin-text-base: 16px;
+  --admin-text-lg: 18px;
+  --admin-text-xl: 20px;
+  --admin-text-2xl: 24px;
+  --admin-text-3xl: 28px;
+
+  /* Typography colors */
+  --admin-text-primary: #25232c;
+  --admin-text-secondary: #827a8a;
+  --admin-text-muted: #a29aaa;
+}
+
+/* Admin typography utility classes */
+
+.admin-text-xs {
+  font-size: var(--admin-text-xs);
+}
+
+.admin-text-sm {
+  font-size: var(--admin-text-sm);
+}
+
+.admin-text-base {
+  font-size: var(--admin-text-base);
+}
+
+.admin-text-lg {
+  font-size: var(--admin-text-lg);
+}
+
+.admin-text-xl {
+  font-size: var(--admin-text-xl);
+}
+
+.admin-text-2xl {
+  font-size: var(--admin-text-2xl);
+}
+
+.admin-text-3xl {
+  font-size: var(--admin-text-3xl);
+}
+
+.admin-panel button,
+.admin-panel input,
+.admin-panel select,
+.admin-panel textarea {
+  font-family: inherit;
+}
+
+/* =========================================================
+   CADGram Admin Readability — scoped Tailwind size adjustments
+   Only applies within .admin-panel; public website is unchanged.
+   Explicit sizes used for data tables / compact UI remain unchanged.
+========================================================= */
+
+.admin-panel .text-xs {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.admin-panel .text-\[11px\] {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.admin-panel .text-\[12px\] {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.admin-panel .text-\[13px\] {
+  font-size: 14px;
+  line-height: 1.5;
+}

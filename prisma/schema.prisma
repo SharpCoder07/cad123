@@ -1,0 +1,776 @@
+generator client {
+  provider = "prisma-client"
+  output   = "./generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  USER
+  ADMIN
+  VENDOR
+}
+
+enum VendorStatus {
+  PENDING
+  ACTIVE
+  SUSPENDED
+}
+
+enum ContentStatus {
+  DRAFT
+  PUBLISHED
+  SCHEDULED
+  ARCHIVED
+}
+
+enum RedirectType {
+  PERMANENT_301
+  TEMPORARY_302
+}
+
+enum ProductStatus {
+  DRAFT
+  SUBMITTED
+  CHANGES_REQUESTED
+  PUBLISHED
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  name     String?
+  email    String   @unique
+  password String?
+  role     UserRole @default(USER)
+
+  // Profile information
+  image      String?
+  phone      String?
+  jobTitle   String?
+  department String?
+  timezone   String  @default("Asia/Kolkata")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Vendor membership
+  vendorId Int?
+  vendor   Vendor? @relation(fields: [vendorId], references: [id], onDelete: SetNull)
+
+  // Super Admin RBAC
+  adminRoleId Int?
+  adminRole   Role? @relation(fields: [adminRoleId], references: [id], onDelete: SetNull)
+
+  reviews        Review[]
+  questions      ProductQuestion[]
+  answers        ProductAnswer[]
+  blogPosts      BlogPost[]
+  activityLogs   ActivityLog[]
+  authoredPages  WebsitePage[]      @relation("PageAuthor")
+  updatedPages   WebsitePage[]      @relation("PageUpdater")
+  uploadedAssets WebsiteAsset[]     @relation("AssetUploader")
+
+  @@index([vendorId])
+  @@index([role])
+  @@index([adminRoleId])
+}
+
+model Vendor {
+  id          Int          @id @default(autoincrement())
+  name        String
+  slug        String       @unique
+  email       String?
+  phone       String?
+  website     String?
+  logo        String?
+  description String?
+  status      VendorStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users    User[]
+  products Product[]
+
+  @@index([status])
+  @@index([name])
+}
+
+model Brand {
+  id          Int      @id @default(autoincrement())
+  name        String
+  slug        String   @unique
+  description String?
+  website     String?
+  logo        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  products Product[]
+}
+
+model Category {
+  id          Int      @id @default(autoincrement())
+  name        String
+  slug        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  parentId Int?
+  parent   Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children Category[] @relation("CategoryHierarchy")
+
+  products Product[]
+}
+
+model Product {
+  id                 Int      @id @default(autoincrement())
+  name               String
+  slug               String   @unique
+  shortDescription   String?
+  description        String?
+  website            String?
+  logo               String?
+  rating             Float?
+  reviewCount        Int      @default(0)
+  pricing            String?
+  freeTrial          Boolean  @default(false)
+  deployment         String?
+  supportedPlatforms String?
+  targetAudience     String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  // Publishing workflow
+  status ProductStatus @default(PUBLISHED)
+
+  // Featured products
+  isFeatured Boolean @default(false)
+
+  // Soft delete / Removed Products
+  deletedAt DateTime?
+
+  // Ownership
+  vendorId Int?
+
+  brandId    Int
+  categoryId Int
+
+  vendor         Vendor?                @relation(fields: [vendorId], references: [id], onDelete: SetNull)
+  brand          Brand                  @relation(fields: [brandId], references: [id])
+  category       Category               @relation(fields: [categoryId], references: [id])
+  pricingPlans   PricingPlan[]
+  features       ProductFeature[]
+  images         ProductImage[]
+  reviews        Review[]
+  faqs           FAQ[]
+  questions      ProductQuestion[]
+  alternatives   ProductAlternative[]   @relation("ProductAlternatives")
+  alternativeFor ProductAlternative[]   @relation("AlternativeForProduct")
+  specifications ProductSpecification[]
+  enquiries      Enquiry[]
+
+  @@index([vendorId])
+  @@index([status])
+}
+
+model PricingPlan {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  price       Float?
+  billing     String?
+  currency    String   @default("INR")
+  features    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  productId Int
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Feature {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  products ProductFeature[]
+}
+
+model ProductFeature {
+  id Int @id @default(autoincrement())
+
+  productId Int
+  featureId Int
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  feature Feature @relation(fields: [featureId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, featureId])
+}
+
+model ProductImage {
+  id        Int      @id @default(autoincrement())
+  url       String
+  altText   String?
+  type      String   @default("gallery")
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  productId Int
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  rating    Int
+  title     String?
+  comment   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId    Int
+  productId Int
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@index([productId])
+  @@index([userId])
+}
+
+model FAQ {
+  id        Int      @id @default(autoincrement())
+  question  String
+  answer    String
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  productId Int
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+}
+
+model ProductQuestion {
+  id        Int      @id @default(autoincrement())
+  question  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId    Int
+  productId Int
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  answers ProductAnswer[]
+
+  @@index([productId])
+  @@index([userId])
+}
+
+model ProductAnswer {
+  id        Int      @id @default(autoincrement())
+  answer    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId     Int
+  questionId Int
+
+  user     User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question ProductQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@index([questionId])
+  @@index([userId])
+}
+
+model ProductAlternative {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  productId     Int
+  alternativeId Int
+
+  product     Product @relation("ProductAlternatives", fields: [productId], references: [id], onDelete: Cascade)
+  alternative Product @relation("AlternativeForProduct", fields: [alternativeId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, alternativeId])
+  @@index([productId])
+  @@index([alternativeId])
+}
+
+model Specification {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  values ProductSpecification[]
+}
+
+model ProductSpecification {
+  id        Int      @id @default(autoincrement())
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  specificationId Int
+  productId       Int
+
+  specification Specification @relation(fields: [specificationId], references: [id], onDelete: Cascade)
+  product       Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, specificationId])
+  @@index([productId])
+  @@index([specificationId])
+}
+
+model Enquiry {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  phone     String?
+  message   String?
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  productId Int
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@index([email])
+}
+
+model BlogPost {
+  id             Int           @id @default(autoincrement())
+  title          String
+  slug           String        @unique
+  excerpt        String?
+  content        String
+  featuredImage  String?
+  status         ContentStatus @default(PUBLISHED)
+  published      Boolean       @default(false)
+  publishedAt    DateTime?
+  scheduledAt    DateTime?
+  readingTime    Int?          @default(3)
+  seoTitle       String?
+  seoDescription String?
+  canonicalUrl   String?
+  ogImage        String?
+  noIndex        Boolean       @default(false)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  authorId   Int?
+  author     User?              @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  categoryId Int?
+  category   BlogCategory?      @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  tags       BlogTag[]
+  revisions  BlogPostRevision[]
+
+  @@index([published])
+  @@index([publishedAt])
+  @@index([authorId])
+  @@index([categoryId])
+  @@index([status])
+}
+
+model ContactMessage {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  message   String
+  status    String   @default("new")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([status])
+}
+
+model WebsiteSettings {
+  id                    Int      @id @default(1)
+  siteName              String   @default("CAD Directory")
+  tagline               String?
+  logoUrl               String?
+  footerLogoUrl         String?
+  faviconUrl            String?
+  defaultOgImage        String?
+  contactEmail          String?
+  contactPhone          String?
+  businessAddress       String?
+  copyrightText         String?
+
+  // Header & Announcement Bar
+  headerSticky          Boolean  @default(true)
+  announcementEnabled   Boolean  @default(false)
+  announcementText      String?
+  announcementLink      String?
+  headerCtaLabel        String?
+  headerCtaUrl          String?
+
+  // Footer & Newsletter
+  newsletterEnabled     Boolean  @default(true)
+  newsletterTitle       String?  @default("Subscribe to our newsletter")
+  newsletterDescription String?
+  socialLinks           Json?    // { linkedin, twitter, youtube, github, facebook }
+  legalLinks            Json?    // [{ label, url }]
+
+  // Forms, Cookie Consent, Analytics & Maintenance
+  contactFormConfig     Json?    // { title, subtitle, successMessage, notificationEmail, enableCaptcha }
+  cookieConsentConfig   Json?    // { enabled, message, policyUrl }
+  googleAnalyticsId     String?
+  googleVerificationId  String?
+  maintenanceMode       Boolean  @default(false)
+  maintenanceMessage    String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+model Role {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  description String?
+  isSystem    Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users       User[]
+  permissions RolePermission[]
+}
+
+model Permission {
+  id     Int    @id @default(autoincrement())
+  module String
+  action String
+  key    String @unique
+
+  roles RolePermission[]
+
+  @@unique([module, action])
+}
+
+model RolePermission {
+  id           Int @id @default(autoincrement())
+  roleId       Int
+  permissionId Int
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+  @@index([permissionId])
+}
+
+model ActivityLog {
+  id Int @id @default(autoincrement())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  action      String
+  description String
+  status      String @default("SUCCESS")
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@index([action])
+}
+
+// ============================================================
+// Website Builder / CMS
+// ============================================================
+
+enum WebsitePageStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum WebsiteVersionStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model WebsitePage {
+  id             Int                  @id @default(autoincrement())
+  title          String
+  slug           String               @unique
+  description    String?
+  parentId       Int?
+  parent         WebsitePage?         @relation("PageHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children       WebsitePage[]        @relation("PageHierarchy")
+  status         WebsitePageStatus    @default(ACTIVE)
+  publishStatus  ContentStatus        @default(DRAFT)
+  isSystem       Boolean              @default(false)
+  isPublished    Boolean              @default(false)
+  publishedAt    DateTime?
+  scheduledAt    DateTime?
+  expiresAt      DateTime?
+  previewToken   String?              @unique
+
+  // SEO & Social Metadata
+  seo            Json?
+  seoTitle       String?
+  seoDescription String?
+  canonicalUrl   String?
+  noIndex        Boolean              @default(false)
+  noFollow       Boolean              @default(false)
+  ogTitle        String?
+  ogDescription  String?
+  ogImage        String?
+  structuredData Json?
+
+  // Concurrency & Audit
+  lockVersion    Int                  @default(1)
+  authorId       Int?
+  author         User?                @relation("PageAuthor", fields: [authorId], references: [id], onDelete: SetNull)
+  updatedById    Int?
+  updatedBy      User?                @relation("PageUpdater", fields: [updatedById], references: [id], onDelete: SetNull)
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+
+  sections       WebsiteSection[]
+  versions       WebsitePageVersion[]
+
+  @@index([slug, status])
+  @@index([parentId])
+  @@index([scheduledAt])
+}
+
+model WebsitePageVersion {
+  id          Int                  @id @default(autoincrement())
+  pageId      Int
+  version     Int
+  title       String?
+  status      WebsiteVersionStatus @default(DRAFT)
+  settings    Json?
+  snapshot    Json?
+  createdById Int?
+  publishedAt DateTime?
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+
+  page     WebsitePage      @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  sections WebsiteSection[]
+
+  @@unique([pageId, version])
+  @@index([pageId, status])
+}
+
+model WebsiteSection {
+  id              Int                   @id @default(autoincrement())
+  versionId       Int?
+  pageId          Int?
+  key             String                @default(cuid())
+  type            String
+  name            String?
+  sortOrder       Int                   @default(0)
+  visible         Boolean               @default(true)
+  isVisible       Boolean               @default(true)
+  content         Json?
+  settings        Json?
+  styles          Json?
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+
+  globalSectionId Int?
+  globalSection   WebsiteGlobalSection? @relation(fields: [globalSectionId], references: [id], onDelete: SetNull)
+
+  version         WebsitePageVersion?   @relation(fields: [versionId], references: [id], onDelete: Cascade)
+  page            WebsitePage?          @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  elements        WebsiteElement[]
+
+  @@unique([versionId, key])
+  @@index([versionId, sortOrder])
+  @@index([pageId, sortOrder])
+  @@index([globalSectionId])
+}
+
+model WebsiteGlobalSection {
+  id          Int      @id @default(autoincrement())
+  name        String
+  type        String
+  description String?
+  isEnabled   Boolean  @default(true)
+  data        Json
+  createdById Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  sections WebsiteSection[]
+
+  @@index([name])
+  @@index([type])
+  @@index([updatedAt])
+}
+
+model WebsiteElement {
+  id         Int      @id @default(autoincrement())
+  sectionId  Int
+  parentId   Int?
+  key        String   @default(cuid())
+  type       String
+  sortOrder  Int      @default(0)
+  visible    Boolean  @default(true)
+  content    Json?
+  styles     Json?
+  responsive Json?
+  action     Json?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  section  WebsiteSection   @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  parent   WebsiteElement?  @relation("WebsiteElementTree", fields: [parentId], references: [id], onDelete: Cascade)
+  children WebsiteElement[] @relation("WebsiteElementTree")
+
+  @@unique([sectionId, key])
+  @@index([sectionId, sortOrder])
+  @@index([parentId])
+}
+
+model WebsiteTheme {
+  id        Int      @id @default(1)
+  name      String   @default("Default")
+  isActive  Boolean  @default(true)
+  tokens    Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WebsiteAsset {
+  id              Int      @id @default(autoincrement())
+  filename        String
+  originalName    String   @default("")
+  url             String   @unique
+  mimeType        String
+  sizeBytes       Int      @default(0)
+  width           Int?
+  height          Int?
+  altText         String?  @default("")
+  caption         String?
+  description     String?
+  folder          String   @default("general")
+  storageProvider String   @default("local")
+  uploadedById    Int?
+  uploadedBy      User?    @relation("AssetUploader", fields: [uploadedById], references: [id], onDelete: SetNull)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([mimeType])
+  @@index([folder])
+  @@index([createdAt])
+}
+
+model WebsiteSectionTemplate {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  type        String
+  data        Json
+  createdById Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([name])
+  @@index([type])
+  @@index([createdAt])
+}
+
+// ============================================================
+// Navigation, URL Redirects & Editorial Taxonomy
+// ============================================================
+
+model NavigationMenu {
+  id        Int              @id @default(autoincrement())
+  name      String
+  slug      String           @unique
+  location  String           @unique
+  isEnabled Boolean          @default(true)
+  items     NavigationItem[]
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+}
+
+model NavigationItem {
+  id        Int              @id @default(autoincrement())
+  menuId    Int
+  menu      NavigationMenu   @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  parentId  Int?
+  parent    NavigationItem?  @relation("NavHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  children  NavigationItem[] @relation("NavHierarchy")
+  label     String
+  url       String
+  pageId    Int?
+  target    String           @default("_self")
+  icon      String?
+  badgeText String?
+  sortOrder Int              @default(0)
+  isEnabled Boolean          @default(true)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@index([menuId, sortOrder])
+  @@index([parentId])
+}
+
+model UrlRedirect {
+  id              Int       @id @default(autoincrement())
+  sourcePath      String    @unique
+  destinationPath String
+  statusCode      Int       @default(301)
+  isEnabled       Boolean   @default(true)
+  hitCount        Int       @default(0)
+  lastAccessedAt  DateTime?
+  notes           String?
+  createdById     Int?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([sourcePath, isEnabled])
+}
+
+model BlogCategory {
+  id          Int        @id @default(autoincrement())
+  name        String     @unique
+  slug        String     @unique
+  description String?
+  posts       BlogPost[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model BlogTag {
+  id    Int        @id @default(autoincrement())
+  name  String     @unique
+  slug  String     @unique
+  posts BlogPost[]
+}
+
+model BlogPostRevision {
+  id        Int      @id @default(autoincrement())
+  postId    Int
+  post      BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  title     String
+  content   String
+  excerpt   String?
+  snapshot  Json?
+  authorId  Int?
+  createdAt DateTime @default(now())
+
+  @@index([postId, createdAt])
+}
